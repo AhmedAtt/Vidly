@@ -1,5 +1,5 @@
 # Vidly movie rental React.js Project
-(Project is still under development) @icon-tools A movie rental react project
+(Project is still under development) <i class="fas fa-tools"></i> A movie rental react project
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
