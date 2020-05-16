@@ -1,3 +1,6 @@
+# Vidly Video movie rental React.js Project
+(Project is still under development)A movie rental react project
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
