@@ -1,5 +1,5 @@
-# Vidly Video movie rental React.js Project
-(Project is still under development)A movie rental react project
+# Vidly movie rental React.js Project
+(Project is still under development) @icon-tools A movie rental react project
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
