@@ -1,22 +1,22 @@
-import React, { Component, useLayoutEffect } from "react";
+import React, { Component } from "react";
 import { getMovies } from "../services/fakeMovieService";
-import Like from "./common/like";
 import Pagination from "./common/pagination";
 import { paginate } from "../utils/paginate";
 import ListGroup from "../components/common/listGroup";
 import { getGenres } from "../services/fakeGenreService";
 import MoviesTable from "./moviesTable";
-
+import _ from "lodash";
 class Movies extends Component {
   state = {
     movies: [],
     genres: [],
     pageSize: 5,
     currentPage: 1,
+    sortColumn: { path: "title", order: "asc" },
   };
   //Good to place service/api calls after an instance of the component is called
   componentDidMount() {
-    const genres = [{ name: "All Genres" }, ...getGenres()];
+    const genres = [{ _id: "", name: "All Genres" }, ...getGenres()];
 
     this.setState({ movies: getMovies(), genres: genres });
   }
@@ -41,13 +41,38 @@ class Movies extends Component {
     this.setState({ selectedGenre: genre, currentPage: 1 });
   };
 
-  render() {
-    const { pageSize, currentPage, movies, selectedGenre } = this.state;
+  handleSort = (sortColumn) => {
+    this.setState({ sortColumn });
+  };
+
+  getPagedData = () => {
+    const {
+      pageSize,
+      currentPage,
+      movies,
+      selectedGenre,
+      sortColumn,
+    } = this.state;
+
     const filteredMovies =
       selectedGenre && selectedGenre._id
         ? movies.filter((m) => m.genre._id === selectedGenre._id)
         : movies;
-    const pageMovies = paginate(filteredMovies, currentPage, pageSize);
+
+    const sorted = _.orderBy(
+      filteredMovies,
+      [sortColumn.path],
+      [sortColumn.order]
+    );
+
+    const pageMovies = paginate(sorted, currentPage, pageSize);
+
+    return { totalCount: filteredMovies.length, data: pageMovies };
+  };
+
+  render() {
+    const { pageSize, currentPage, selectedGenre, sortColumn } = this.state;
+    const { totalCount, data: movies } = this.getPagedData();
     return (
       <div className="contianer-fluid">
         <div className="row">
@@ -61,14 +86,16 @@ class Movies extends Component {
             />
           </div>
           <div className="col">
+            <p>Showing {totalCount} movies in the database</p>
             <MoviesTable
-              filteredMovies={filteredMovies}
-              pageMovies={pageMovies}
+              movies={movies}
               onLike={this.handleLike}
               onDelete={this.handleDelete}
+              onSort={this.handleSort}
+              sortColumn={sortColumn}
             />
             <Pagination
-              itemsCount={filteredMovies.length}
+              itemsCount={totalCount}
               pageSize={pageSize}
               onPageChange={this.handlePageChange}
               currentPage={currentPage}
