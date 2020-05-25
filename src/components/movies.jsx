@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { Route } from "react-router-dom";
+
 import { getMovies } from "../services/fakeMovieService";
 import Pagination from "./common/pagination";
 import { paginate } from "../utils/paginate";
@@ -6,6 +8,7 @@ import ListGroup from "../components/common/listGroup";
 import { getGenres } from "../services/fakeGenreService";
 import MoviesTable from "./moviesTable";
 import _ from "lodash";
+
 class Movies extends Component {
   state = {
     movies: [],
@@ -102,6 +105,7 @@ class Movies extends Component {
             />
           </div>
         </div>
+        <Route path="/movies/" />
       </div>
     );
   }

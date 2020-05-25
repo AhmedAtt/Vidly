@@ -1,12 +1,19 @@
 //Created this component to have consistent levels of abstraction in the movies component
 import React, { Component } from "react";
-import Like from "./common/like";
+import { Link } from "react-router-dom";
 
+import Like from "./common/like";
 import Table from "./common/table";
 class MoviesTable extends Component {
   //No need to add it to state becuase it won't be changing through out the lifecycle of this component
   columns = [
-    { path: "title", label: "Title" },
+    {
+      path: "title",
+      label: "Title",
+      content: (movie) => (
+        <Link to={`/movies/${movie._id}`}>{movie.title}</Link>
+      ),
+    },
     { path: "genre.name", label: "Genre" },
     { path: "numberInStock", label: "Stock" },
     { path: "dailyRentalRate", label: "Rate" },
